@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { venues } from '@/data/mockData';
+import { supabase } from '@/integrations/supabase/client';
 import { EventCategory, categoryLabels } from '@/types/events';
 import { Calendar, Clock, MapPin, User, Mail, Send, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
