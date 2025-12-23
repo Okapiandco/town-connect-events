@@ -18,10 +18,16 @@ import { EventCategory, categoryLabels } from '@/types/events';
 import { Calendar, Clock, MapPin, User, Mail, Send, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
+interface VenueOption {
+  id: string;
+  name: string;
+}
+
 const SubmitEvent = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [venues, setVenues] = useState<VenueOption[]>([]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -36,6 +42,20 @@ const SubmitEvent = () => {
     price: '',
     ticketUrl: '',
   });
+
+  useEffect(() => {
+    const fetchVenues = async () => {
+      const { data, error } = await supabase
+        .from('venues')
+        .select('id, name')
+        .order('name');
+      
+      if (data && !error) {
+        setVenues(data);
+      }
+    };
+    fetchVenues();
+  }, []);
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -61,12 +81,40 @@ const SubmitEvent = () => {
 
     setIsSubmitting(true);
 
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const { error } = await supabase
+        .from('events')
+        .insert({
+          title: formData.title,
+          description: formData.description,
+          date: formData.date,
+          time: formData.time,
+          end_time: formData.endTime || null,
+          category: formData.category as EventCategory,
+          venue_id: formData.venueId,
+          organizer: formData.organizer,
+          contact_email: formData.contactEmail,
+          price: formData.price || null,
+          ticket_url: formData.ticketUrl || null,
+          status: 'pending',
+          is_featured: false,
+        });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast.success('Event submitted successfully!');
+      if (error) {
+        console.error('Error submitting event:', error);
+        toast.error('Failed to submit event. Please try again.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      toast.success('Event submitted successfully!');
+    } catch (err) {
+      console.error('Error:', err);
+      toast.error('An unexpected error occurred.');
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
