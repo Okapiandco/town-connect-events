@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -15,7 +15,9 @@ import {
 } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { EventCategory, categoryLabels } from '@/types/events';
-import { Calendar, Clock, MapPin, User, Mail, Send, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, User, Mail, Send, CheckCircle, ImagePlus, X } from 'lucide-react';
+
+const MAX_FILE_SIZE = 200 * 1024; // 200KB in bytes
 import { toast } from 'sonner';
 
 interface VenueOption {
@@ -28,6 +30,9 @@ const SubmitEvent = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [venues, setVenues] = useState<VenueOption[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -57,6 +62,32 @@ const SubmitEvent = () => {
     fetchVenues();
   }, []);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error('Image must be under 200KB. Please choose a smaller file.');
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file (JPG, PNG, etc.)');
+      return;
+    }
+
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => setImagePreview(e.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -82,6 +113,31 @@ const SubmitEvent = () => {
     setIsSubmitting(true);
 
     try {
+      let imageUrl: string | null = null;
+
+      // Upload image if provided
+      if (imageFile) {
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { error: uploadError, data: uploadData } = await supabase.storage
+          .from('event-images')
+          .upload(fileName, imageFile);
+
+        if (uploadError) {
+          console.error('Error uploading image:', uploadError);
+          toast.error('Failed to upload image. Please try again.');
+          setIsSubmitting(false);
+          return;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('event-images')
+          .getPublicUrl(fileName);
+        
+        imageUrl = publicUrl;
+      }
+
       const { error } = await supabase
         .from('events')
         .insert({
@@ -96,6 +152,7 @@ const SubmitEvent = () => {
           contact_email: formData.contactEmail,
           price: formData.price || null,
           ticket_url: formData.ticketUrl || null,
+          image_url: imageUrl,
           status: 'pending',
           is_featured: false,
         });
@@ -367,6 +424,47 @@ const SubmitEvent = () => {
                       className="rounded-none"
                     />
                   </div>
+                </div>
+
+                {/* Image Upload */}
+                <div className="space-y-2">
+                  <Label>Event Image</Label>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Upload an image for your event (max 200KB, JPG or PNG)
+                  </p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    id="image-upload"
+                  />
+                  {!imagePreview ? (
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full h-32 border-2 border-dashed border-border hover:border-accent transition-colors flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground"
+                    >
+                      <ImagePlus className="h-8 w-8" />
+                      <span className="text-sm">Click to upload image</span>
+                    </button>
+                  ) : (
+                    <div className="relative w-full h-48">
+                      <img
+                        src={imagePreview}
+                        alt="Event preview"
+                        className="w-full h-full object-cover border border-border"
+                      />
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute top-2 right-2 p-1 bg-background/90 border border-border hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Submit */}
