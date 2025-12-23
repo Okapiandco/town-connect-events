@@ -34,11 +34,11 @@ const Index = () => {
       <HeroSection />
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 bg-background">
         {/* Featured Events */}
         {featuredEvents.length > 0 && (
-          <section className="container mx-auto px-4 py-12">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-6">
+          <section className="container mx-auto px-4 py-16">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-8">
               Featured Events
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
@@ -56,27 +56,32 @@ const Index = () => {
         )}
 
         {/* All Events */}
-        <section id="events" className="container mx-auto px-4 py-12 scroll-mt-20">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground">
-              Upcoming Events
-            </h2>
+        <section id="events" className="container mx-auto px-4 py-16 scroll-mt-24 border-t border-border">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+            <div>
+              <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground">
+                What's On
+              </h2>
+              <p className="text-muted-foreground mt-2">
+                Find events happening in and around Langport
+              </p>
+            </div>
             
             {/* Search */}
-            <div className="relative w-full md:w-72">
+            <div className="relative w-full md:w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Search events..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 rounded-none"
               />
             </div>
           </div>
 
           {/* Category Filter */}
-          <div className="mb-8">
+          <div className="mb-10">
             <CategoryFilter
               selectedCategory={selectedCategory}
               onCategoryChange={setSelectedCategory}
@@ -97,10 +102,10 @@ const Index = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16">
-              <div className="text-muted-foreground text-lg">
+            <div className="text-center py-20 border border-border">
+              <p className="text-muted-foreground text-lg">
                 No events found matching your criteria.
-              </div>
+              </p>
               <p className="text-muted-foreground/70 mt-2">
                 Try adjusting your search or filter settings.
               </p>

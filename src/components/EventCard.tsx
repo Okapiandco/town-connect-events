@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Users } from 'lucide-react';
-import { Event, categoryLabels, categoryColors } from '@/types/events';
+import { Calendar, Clock, MapPin } from 'lucide-react';
+import { Event, categoryLabels } from '@/types/events';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { format, parseISO } from 'date-fns';
 
 interface EventCardProps {
@@ -16,15 +15,15 @@ const EventCard = ({ event, featured = false }: EventCardProps) => {
 
   return (
     <Link to={`/event/${event.id}`}>
-      <Card 
-        className={`group overflow-hidden transition-all duration-300 hover:card-shadow-hover card-shadow border-border/50 ${
-          featured ? 'md:flex md:h-64' : ''
+      <article 
+        className={`group overflow-hidden transition-all duration-300 bg-card border border-border hover:border-foreground/20 ${
+          featured ? 'md:flex' : ''
         }`}
       >
         {/* Image */}
         <div 
           className={`relative overflow-hidden bg-muted ${
-            featured ? 'md:w-2/5 h-48 md:h-full' : 'h-44'
+            featured ? 'md:w-2/5 h-56 md:h-auto' : 'h-48'
           }`}
         >
           {event.imageUrl ? (
@@ -34,22 +33,22 @@ const EventCard = ({ event, featured = false }: EventCardProps) => {
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="h-full w-full hero-gradient flex items-center justify-center">
-              <Calendar className="h-12 w-12 text-primary-foreground/60" />
+            <div className="h-full w-full bg-secondary flex items-center justify-center">
+              <Calendar className="h-12 w-12 text-muted-foreground" />
             </div>
           )}
           
           {/* Category Badge */}
-          <div className="absolute top-3 left-3">
-            <Badge className={`${categoryColors[event.category]} border-0 font-medium`}>
+          <div className="absolute top-4 left-4">
+            <Badge variant="secondary" className="bg-background/95 text-foreground border-0 font-medium uppercase text-xs tracking-wide">
               {categoryLabels[event.category]}
             </Badge>
           </div>
 
           {/* Featured Badge */}
           {event.isFeatured && (
-            <div className="absolute top-3 right-3">
-              <Badge className="bg-secondary text-secondary-foreground border-0 font-semibold">
+            <div className="absolute top-4 right-4">
+              <Badge className="bg-foreground text-background border-0 font-medium uppercase text-xs tracking-wide">
                 Featured
               </Badge>
             </div>
@@ -57,23 +56,23 @@ const EventCard = ({ event, featured = false }: EventCardProps) => {
         </div>
 
         {/* Content */}
-        <CardContent className={`p-4 ${featured ? 'md:flex-1 md:p-6' : ''}`}>
+        <div className={`p-5 ${featured ? 'md:flex-1 md:p-8 md:flex md:flex-col md:justify-center' : ''}`}>
           <div className="space-y-3">
             {/* Date & Time */}
-            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1.5">
-                <Calendar className="h-4 w-4 text-primary" />
+                <Calendar className="h-4 w-4" />
                 <span className="font-medium">{formattedDate}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-primary" />
-                <span>{formattedTime}{event.endTime && ` - ${event.endTime}`}</span>
+                <Clock className="h-4 w-4" />
+                <span>{formattedTime}{event.endTime && ` – ${event.endTime}`}</span>
               </div>
             </div>
 
             {/* Title */}
-            <h3 className={`font-serif font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 ${
-              featured ? 'text-xl md:text-2xl' : 'text-lg'
+            <h3 className={`font-display font-semibold text-foreground group-hover:text-muted-foreground transition-colors ${
+              featured ? 'text-2xl md:text-3xl' : 'text-xl'
             }`}>
               {event.title}
             </h3>
@@ -84,22 +83,22 @@ const EventCard = ({ event, featured = false }: EventCardProps) => {
             </p>
 
             {/* Venue */}
-            <div className="flex items-center gap-1.5 text-sm text-muted-foreground pt-1">
-              <MapPin className="h-4 w-4 text-accent" />
-              <span className="truncate">{event.venue.name}</span>
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground pt-2">
+              <MapPin className="h-4 w-4" />
+              <span>{event.venue.name}</span>
             </div>
 
             {/* Price */}
             {event.price && (
               <div className="pt-2">
-                <span className="inline-block px-3 py-1 bg-muted rounded-full text-sm font-medium text-foreground">
+                <span className="inline-block text-sm font-medium text-foreground">
                   {event.price}
                 </span>
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </article>
     </Link>
   );
 };

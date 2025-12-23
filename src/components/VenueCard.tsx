@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Users } from 'lucide-react';
 import { Venue } from '@/types/events';
-import { Card, CardContent } from '@/components/ui/card';
 
 interface VenueCardProps {
   venue: Venue;
@@ -10,9 +9,9 @@ interface VenueCardProps {
 const VenueCard = ({ venue }: VenueCardProps) => {
   return (
     <Link to={`/venue/${venue.id}`}>
-      <Card className="group overflow-hidden transition-all duration-300 hover:card-shadow-hover card-shadow border-border/50">
+      <article className="group overflow-hidden transition-all duration-300 bg-card border border-border hover:border-foreground/20">
         {/* Image */}
-        <div className="relative h-48 overflow-hidden bg-muted">
+        <div className="relative h-52 overflow-hidden bg-muted">
           {venue.imageUrl ? (
             <img
               src={venue.imageUrl}
@@ -20,39 +19,39 @@ const VenueCard = ({ venue }: VenueCardProps) => {
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="h-full w-full hero-gradient flex items-center justify-center">
-              <MapPin className="h-12 w-12 text-primary-foreground/60" />
+            <div className="h-full w-full bg-secondary flex items-center justify-center">
+              <MapPin className="h-12 w-12 text-muted-foreground" />
             </div>
           )}
         </div>
 
         {/* Content */}
-        <CardContent className="p-4">
-          <div className="space-y-2">
-            <h3 className="font-serif text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+        <div className="p-5">
+          <div className="space-y-3">
+            <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-muted-foreground transition-colors">
               {venue.name}
             </h3>
             
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4 text-accent" />
+              <MapPin className="h-4 w-4" />
               <span>{venue.address}</span>
             </div>
 
             {venue.capacity && (
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                <Users className="h-4 w-4 text-primary" />
+                <Users className="h-4 w-4" />
                 <span>Capacity: {venue.capacity.toLocaleString()}</span>
               </div>
             )}
 
             {venue.description && (
-              <p className="text-muted-foreground text-sm line-clamp-2 pt-1">
+              <p className="text-muted-foreground text-sm line-clamp-2">
                 {venue.description}
               </p>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </article>
     </Link>
   );
 };

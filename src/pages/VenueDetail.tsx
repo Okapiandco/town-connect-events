@@ -20,7 +20,7 @@ const VenueDetail = () => {
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="font-serif text-3xl font-bold text-foreground mb-4">Venue Not Found</h1>
+            <h1 className="font-display text-3xl font-semibold text-foreground mb-4">Venue Not Found</h1>
             <p className="text-muted-foreground mb-6">The venue you're looking for doesn't exist.</p>
             <Link to="/venues">
               <Button variant="default">
@@ -41,7 +41,7 @@ const VenueDetail = () => {
 
       <main className="flex-1">
         {/* Hero Image */}
-        <div className="relative h-64 md:h-80 overflow-hidden">
+        <div className="relative h-72 md:h-96 overflow-hidden">
           {venue.imageUrl ? (
             <img
               src={venue.imageUrl}
@@ -49,12 +49,12 @@ const VenueDetail = () => {
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="h-full w-full hero-gradient" />
+            <div className="h-full w-full bg-secondary" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
+          <div className="absolute inset-0 hero-overlay" />
           
           {/* Back Button */}
-          <div className="absolute top-4 left-4">
+          <div className="absolute top-6 left-6">
             <Link to="/venues">
               <Button variant="secondary" size="sm" className="gap-2">
                 <ArrowLeft className="h-4 w-4" />
@@ -65,27 +65,27 @@ const VenueDetail = () => {
         </div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl animate-fade-up">
-            <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-6">
               {venue.name}
             </h1>
 
-            <div className="flex flex-wrap gap-4 text-muted-foreground mb-6">
+            <div className="flex flex-wrap gap-6 text-muted-foreground mb-8 pb-8 border-b border-border">
               <div className="flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-accent" />
+                <MapPin className="h-5 w-5" />
                 <span>{venue.address}</span>
               </div>
               {venue.capacity && (
                 <div className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
+                  <Users className="h-5 w-5" />
                   <span>Capacity: {venue.capacity.toLocaleString()}</span>
                 </div>
               )}
             </div>
 
             {venue.description && (
-              <p className="text-lg text-foreground/80 leading-relaxed mb-8">
+              <p className="text-lg text-foreground/80 leading-relaxed">
                 {venue.description}
               </p>
             )}
@@ -93,13 +93,10 @@ const VenueDetail = () => {
 
           {/* Events at this Venue */}
           {venueEvents.length > 0 && (
-            <section className="mt-12 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-              <div className="flex items-center gap-2 mb-6">
-                <Calendar className="h-6 w-6 text-primary" />
-                <h2 className="font-serif text-2xl font-bold text-foreground">
-                  Upcoming Events at {venue.name}
-                </h2>
-              </div>
+            <section className="mt-16 pt-12 border-t border-border animate-fade-up" style={{ animationDelay: '0.1s' }}>
+              <h2 className="font-display text-3xl font-semibold text-foreground mb-8">
+                Upcoming Events at {venue.name}
+              </h2>
               
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {venueEvents.map((event, index) => (
