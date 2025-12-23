@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Calendar, Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -8,38 +8,33 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary">
-                <Calendar className="h-5 w-5 text-secondary-foreground" />
-              </div>
-              <div>
-                <h3 className="text-lg font-serif font-semibold">Town Events</h3>
-                <p className="text-xs text-primary-foreground/60">Community Calendar</p>
-              </div>
+            <div className="mb-4">
+              <span className="text-2xl font-display font-bold tracking-tight">LANGPORT</span>
+              <span className="text-xs tracking-[0.3em] text-primary-foreground/60 ml-0.5">.LIFE</span>
             </div>
-            <p className="text-primary-foreground/70 max-w-md">
-              Your central hub for discovering and sharing community events. 
-              Bringing neighbours together through local happenings.
+            <p className="text-primary-foreground/70 max-w-md leading-relaxed">
+              Your guide to events, activities, and community life in Langport, Somerset. 
+              Bringing our historic market town community together.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-serif font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
+            <h4 className="font-display font-semibold text-lg mb-4">Quick Links</h4>
+            <ul className="space-y-3">
               <li>
-                <Link to="/" className="text-primary-foreground/70 hover:text-secondary transition-colors">
-                  All Events
+                <Link to="/" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  What's On
                 </Link>
               </li>
               <li>
-                <Link to="/venues" className="text-primary-foreground/70 hover:text-secondary transition-colors">
+                <Link to="/venues" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                   Venues
                 </Link>
               </li>
               <li>
-                <Link to="/submit" className="text-primary-foreground/70 hover:text-secondary transition-colors">
-                  Submit Event
+                <Link to="/submit" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  Add Your Event
                 </Link>
               </li>
             </ul>
@@ -47,26 +42,32 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-serif font-semibold mb-4">Contact Council</h4>
+            <h4 className="font-display font-semibold text-lg mb-4">Town Council</h4>
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-primary-foreground/70">
-                <Mail className="h-4 w-4 text-secondary" />
-                <span>events@towncouncil.gov</span>
+                <Mail className="h-4 w-4" />
+                <span>clerk@langport.life</span>
               </li>
               <li className="flex items-center gap-2 text-primary-foreground/70">
-                <Phone className="h-4 w-4 text-secondary" />
-                <span>01onal 234 5678</span>
+                <Phone className="h-4 w-4" />
+                <span>01onal 250 062</span>
               </li>
-              <li className="flex items-center gap-2 text-primary-foreground/70">
-                <MapPin className="h-4 w-4 text-secondary" />
-                <span>Town Hall, Main Street</span>
+              <li className="flex items-start gap-2 text-primary-foreground/70">
+                <MapPin className="h-4 w-4 mt-0.5" />
+                <span>Town Hall, Bow Street<br />Langport TA10 9PR</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/10 mt-8 pt-8 text-center text-sm text-primary-foreground/50">
-          <p>© {new Date().getFullYear()} Town Council Events. All rights reserved.</p>
+        <div className="border-t border-primary-foreground/10 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-primary-foreground/50">
+            © {new Date().getFullYear()} Langport Town Council. All rights reserved.
+          </p>
+          <div className="flex gap-6 text-sm text-primary-foreground/50">
+            <a href="#" className="hover:text-primary-foreground transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-primary-foreground transition-colors">Accessibility</a>
+          </div>
         </div>
       </div>
     </footer>

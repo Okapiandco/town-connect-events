@@ -3,9 +3,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { events } from '@/data/mockData';
-import { categoryLabels, categoryColors } from '@/types/events';
+import { categoryLabels } from '@/types/events';
 import { 
   Calendar, 
   Clock, 
@@ -30,7 +29,7 @@ const EventDetail = () => {
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="font-serif text-3xl font-bold text-foreground mb-4">Event Not Found</h1>
+            <h1 className="font-display text-3xl font-semibold text-foreground mb-4">Event Not Found</h1>
             <p className="text-muted-foreground mb-6">The event you're looking for doesn't exist.</p>
             <Link to="/">
               <Button variant="default">
@@ -70,7 +69,7 @@ const EventDetail = () => {
 
       <main className="flex-1">
         {/* Hero Image */}
-        <div className="relative h-64 md:h-96 overflow-hidden">
+        <div className="relative h-72 md:h-96 overflow-hidden">
           {event.imageUrl ? (
             <img
               src={event.imageUrl}
@@ -78,12 +77,12 @@ const EventDetail = () => {
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="h-full w-full hero-gradient" />
+            <div className="h-full w-full bg-secondary" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
+          <div className="absolute inset-0 hero-overlay" />
           
           {/* Back Button */}
-          <div className="absolute top-4 left-4">
+          <div className="absolute top-6 left-6">
             <Link to="/">
               <Button variant="secondary" size="sm" className="gap-2">
                 <ArrowLeft className="h-4 w-4" />
@@ -93,50 +92,54 @@ const EventDetail = () => {
           </div>
 
           {/* Category Badge */}
-          <div className="absolute bottom-4 left-4">
-            <Badge className={`${categoryColors[event.category]} border-0 font-medium text-base px-4 py-1`}>
+          <div className="absolute bottom-6 left-6">
+            <Badge className="bg-background text-foreground border-0 font-medium uppercase text-xs tracking-wide px-4 py-1.5">
               {categoryLabels[event.category]}
             </Badge>
           </div>
         </div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid lg:grid-cols-3 gap-8">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid lg:grid-cols-3 gap-12">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-8">
               <div className="animate-fade-up">
-                <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
+                <h1 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-6">
                   {event.title}
                 </h1>
                 
                 {/* Quick Info */}
-                <div className="flex flex-wrap gap-4 text-muted-foreground mb-6">
+                <div className="flex flex-wrap gap-6 text-muted-foreground mb-8 pb-8 border-b border-border">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-primary" />
+                    <Calendar className="h-5 w-5" />
                     <span>{formattedDate}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-primary" />
-                    <span>{event.time}{event.endTime && ` - ${event.endTime}`}</span>
+                    <Clock className="h-5 w-5" />
+                    <span>{event.time}{event.endTime && ` – ${event.endTime}`}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5" />
+                    <span>{event.venue.name}</span>
                   </div>
                 </div>
 
                 {/* Description */}
                 <div className="prose prose-lg max-w-none">
-                  <p className="text-foreground/80 leading-relaxed">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
                     {event.description}
                   </p>
                 </div>
 
                 {/* Organizer */}
-                <div className="flex items-center gap-3 pt-6 border-t border-border mt-6">
-                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <User className="h-6 w-6 text-primary" />
+                <div className="flex items-center gap-4 pt-8 border-t border-border mt-8">
+                  <div className="h-14 w-14 bg-secondary flex items-center justify-center">
+                    <User className="h-7 w-7 text-muted-foreground" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Organised by</p>
-                    <p className="font-semibold text-foreground">{event.organizer}</p>
+                    <p className="font-semibold text-foreground text-lg">{event.organizer}</p>
                   </div>
                 </div>
               </div>
@@ -145,86 +148,82 @@ const EventDetail = () => {
             {/* Sidebar */}
             <div className="space-y-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
               {/* Action Card */}
-              <Card className="card-shadow">
-                <CardContent className="p-6 space-y-4">
-                  {event.price && (
-                    <div className="text-center pb-4 border-b border-border">
-                      <p className="text-sm text-muted-foreground">Entry</p>
-                      <p className="text-2xl font-serif font-bold text-foreground">{event.price}</p>
-                    </div>
-                  )}
-
-                  <div className="space-y-3">
-                    {event.ticketUrl && (
-                      <a href={event.ticketUrl} target="_blank" rel="noopener noreferrer">
-                        <Button variant="amber" size="lg" className="w-full gap-2">
-                          <ExternalLink className="h-4 w-4" />
-                          Get Tickets
-                        </Button>
-                      </a>
-                    )}
-                    
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
-                      className="w-full gap-2"
-                      onClick={handleShare}
-                    >
-                      <Share2 className="h-4 w-4" />
-                      Share Event
-                    </Button>
+              <div className="border border-border p-6 space-y-5">
+                {event.price && (
+                  <div className="text-center pb-5 border-b border-border">
+                    <p className="text-sm text-muted-foreground mb-1">Entry</p>
+                    <p className="text-2xl font-display font-semibold text-foreground">{event.price}</p>
                   </div>
+                )}
 
-                  {event.contactEmail && (
-                    <div className="pt-4 border-t border-border">
-                      <p className="text-sm text-muted-foreground mb-2">Questions?</p>
-                      <a 
-                        href={`mailto:${event.contactEmail}`}
-                        className="flex items-center gap-2 text-primary hover:underline"
-                      >
-                        <Mail className="h-4 w-4" />
-                        {event.contactEmail}
-                      </a>
-                    </div>
+                <div className="space-y-3">
+                  {event.ticketUrl && (
+                    <a href={event.ticketUrl} target="_blank" rel="noopener noreferrer">
+                      <Button variant="default" size="lg" className="w-full gap-2">
+                        <ExternalLink className="h-4 w-4" />
+                        Get Tickets
+                      </Button>
+                    </a>
                   )}
-                </CardContent>
-              </Card>
+                  
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full gap-2"
+                    onClick={handleShare}
+                  >
+                    <Share2 className="h-4 w-4" />
+                    Share Event
+                  </Button>
+                </div>
+
+                {event.contactEmail && (
+                  <div className="pt-5 border-t border-border">
+                    <p className="text-sm text-muted-foreground mb-2">Questions?</p>
+                    <a 
+                      href={`mailto:${event.contactEmail}`}
+                      className="flex items-center gap-2 text-foreground hover:text-muted-foreground transition-colors"
+                    >
+                      <Mail className="h-4 w-4" />
+                      {event.contactEmail}
+                    </a>
+                  </div>
+                )}
+              </div>
 
               {/* Venue Card */}
-              <Card className="card-shadow">
-                <CardContent className="p-0">
-                  {event.venue.imageUrl && (
-                    <img
-                      src={event.venue.imageUrl}
-                      alt={event.venue.name}
-                      className="h-40 w-full object-cover rounded-t-lg"
-                    />
-                  )}
-                  <div className="p-6 space-y-3">
-                    <h3 className="font-serif text-xl font-semibold text-foreground">
-                      {event.venue.name}
-                    </h3>
-                    
-                    <div className="flex items-start gap-2 text-muted-foreground">
-                      <MapPin className="h-5 w-5 text-accent mt-0.5" />
-                      <span>{event.venue.address}</span>
-                    </div>
-
-                    {event.venue.capacity && (
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Users className="h-5 w-5 text-primary" />
-                        <span>Capacity: {event.venue.capacity.toLocaleString()}</span>
-                      </div>
-                    )}
-
-                    <Link to={`/venue/${event.venue.id}`}>
-                      <Button variant="ghost" size="sm" className="w-full mt-2">
-                        View Venue Details
-                      </Button>
-                    </Link>
+              <div className="border border-border overflow-hidden">
+                {event.venue.imageUrl && (
+                  <img
+                    src={event.venue.imageUrl}
+                    alt={event.venue.name}
+                    className="h-44 w-full object-cover"
+                  />
+                )}
+                <div className="p-6 space-y-4">
+                  <h3 className="font-display text-xl font-semibold text-foreground">
+                    {event.venue.name}
+                  </h3>
+                  
+                  <div className="flex items-start gap-2 text-muted-foreground text-sm">
+                    <MapPin className="h-4 w-4 mt-0.5" />
+                    <span>{event.venue.address}</span>
                   </div>
-                </CardContent>
-              </Card>
+
+                  {event.venue.capacity && (
+                    <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                      <Users className="h-4 w-4" />
+                      <span>Capacity: {event.venue.capacity.toLocaleString()}</span>
+                    </div>
+                  )}
+
+                  <Link to={`/venue/${event.venue.id}`}>
+                    <Button variant="ghost" size="sm" className="w-full mt-2 uppercase text-xs tracking-wide">
+                      View Venue Details
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>

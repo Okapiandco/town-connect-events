@@ -30,9 +30,9 @@ const CategoryFilter = ({ selectedCategory, onCategoryChange }: CategoryFilterPr
             variant={selectedCategory === category ? 'default' : 'outline'}
             size="sm"
             onClick={() => onCategoryChange(category)}
-            className="rounded-full shrink-0"
+            className="shrink-0 uppercase text-xs tracking-wide"
           >
-            {category === 'all' ? 'All Events' : categoryLabels[category]}
+            {category === 'all' ? 'All' : categoryLabels[category]}
           </Button>
         ))}
       </div>

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Calendar, Plus, MapPin, Menu, X } from 'lucide-react';
+import { Calendar, Plus, MapPin, Menu, X, Info, Phone } from 'lucide-react';
 import { useState } from 'react';
 
 const Header = () => {
@@ -8,85 +8,83 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { path: '/', label: 'Events', icon: Calendar },
-    { path: '/venues', label: 'Venues', icon: MapPin },
+    { path: '/', label: "WHAT'S ON" },
+    { path: '/venues', label: 'VENUES' },
+    { path: '/submit', label: 'ADD EVENT' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl hero-gradient shadow-md group-hover:shadow-lg transition-shadow">
-              <Calendar className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-lg font-serif font-semibold text-foreground">Town Events</h1>
-              <p className="text-xs text-muted-foreground -mt-0.5">Community Calendar</p>
+            <div className="flex flex-col">
+              <span className="text-2xl font-display font-bold tracking-tight text-foreground">
+                LANGPORT
+              </span>
+              <span className="text-xs tracking-[0.3em] text-muted-foreground font-medium -mt-1">
+                .LIFE
+              </span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map(({ path, label, icon: Icon }) => (
-              <Link key={path} to={path}>
-                <Button
-                  variant={isActive(path) ? 'secondary' : 'ghost'}
-                  size="sm"
-                  className="gap-2"
-                >
-                  <Icon className="h-4 w-4" />
-                  {label}
-                </Button>
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map(({ path, label }) => (
+              <Link 
+                key={path} 
+                to={path}
+                className={`text-sm font-medium tracking-wide transition-colors hover:text-foreground ${
+                  isActive(path) 
+                    ? 'text-foreground border-b-2 border-foreground pb-1' 
+                    : 'text-muted-foreground'
+                }`}
+              >
+                {label}
               </Link>
             ))}
           </nav>
 
-          {/* Submit Event Button */}
-          <div className="flex items-center gap-2">
-            <Link to="/submit" className="hidden sm:block">
-              <Button variant="amber" size="default" className="gap-2">
+          {/* CTA Button */}
+          <div className="hidden md:flex items-center gap-4">
+            <Link to="/submit">
+              <Button variant="outline" size="default" className="gap-2 uppercase tracking-wide text-xs">
                 <Plus className="h-4 w-4" />
                 Submit Event
               </Button>
             </Link>
-            
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
           </div>
+            
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-border py-4 animate-fade-in">
-            <nav className="flex flex-col gap-2">
-              {navLinks.map(({ path, label, icon: Icon }) => (
-                <Link key={path} to={path} onClick={() => setMobileMenuOpen(false)}>
-                  <Button
-                    variant={isActive(path) ? 'secondary' : 'ghost'}
-                    className="w-full justify-start gap-2"
-                  >
-                    <Icon className="h-4 w-4" />
-                    {label}
-                  </Button>
+          <div className="md:hidden border-t border-border py-6 animate-fade-in">
+            <nav className="flex flex-col gap-4">
+              {navLinks.map(({ path, label }) => (
+                <Link 
+                  key={path} 
+                  to={path} 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-sm font-medium tracking-wide py-2 ${
+                    isActive(path) ? 'text-foreground' : 'text-muted-foreground'
+                  }`}
+                >
+                  {label}
                 </Link>
               ))}
-              <Link to="/submit" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="amber" className="w-full justify-start gap-2 mt-2">
-                  <Plus className="h-4 w-4" />
-                  Submit Event
-                </Button>
-              </Link>
             </nav>
           </div>
         )}

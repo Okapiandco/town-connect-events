@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -75,47 +74,45 @@ const SubmitEvent = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 flex items-center justify-center px-4 py-16">
-          <Card className="max-w-md w-full card-shadow animate-scale-in">
-            <CardContent className="pt-6 text-center">
-              <div className="h-16 w-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="h-8 w-8 text-accent" />
-              </div>
-              <h2 className="font-serif text-2xl font-bold text-foreground mb-2">
-                Event Submitted!
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Thank you for submitting your event. Our team will review it and 
-                get back to you within 2-3 business days.
-              </p>
-              <div className="space-y-3">
-                <Button variant="default" className="w-full" onClick={() => navigate('/')}>
-                  Back to Events
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => {
-                    setIsSubmitted(false);
-                    setFormData({
-                      title: '',
-                      description: '',
-                      date: '',
-                      time: '',
-                      endTime: '',
-                      category: '',
-                      venueId: '',
-                      organizer: '',
-                      contactEmail: '',
-                      price: '',
-                      ticketUrl: '',
-                    });
-                  }}
-                >
-                  Submit Another Event
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="max-w-md w-full border border-border p-8 text-center animate-scale-in">
+            <div className="h-16 w-16 bg-secondary flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="h-8 w-8 text-accent" />
+            </div>
+            <h2 className="font-display text-2xl font-semibold text-foreground mb-3">
+              Event Submitted!
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              Thank you for submitting your event. Our team will review it and 
+              get back to you within 2-3 business days.
+            </p>
+            <div className="space-y-3">
+              <Button variant="default" className="w-full" onClick={() => navigate('/')}>
+                Back to Events
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => {
+                  setIsSubmitted(false);
+                  setFormData({
+                    title: '',
+                    description: '',
+                    date: '',
+                    time: '',
+                    endTime: '',
+                    category: '',
+                    venueId: '',
+                    organizer: '',
+                    contactEmail: '',
+                    price: '',
+                    ticketUrl: '',
+                  });
+                }}
+              >
+                Submit Another Event
+              </Button>
+            </div>
+          </div>
         </main>
         <Footer />
       </div>
@@ -132,32 +129,28 @@ const SubmitEvent = () => {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="hero-gradient py-12 md:py-16">
+        <section className="bg-foreground py-16 md:py-20">
           <div className="container mx-auto px-4 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full text-primary-foreground/90 text-sm mb-4">
-              <Send className="h-4 w-4" />
-              <span>Community Submissions</span>
-            </div>
-            <h1 className="font-serif text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-              Submit Your Event
+            <h1 className="font-display text-4xl md:text-5xl font-semibold text-primary-foreground mb-4">
+              Add Your Event
             </h1>
-            <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-              Share your event with the community! Fill out the form below and our 
-              team will review your submission within 2-3 business days.
+            <p className="text-lg text-primary-foreground/70 max-w-2xl mx-auto">
+              Share your event with the Langport community. Fill out the form below 
+              and our team will review your submission within 2-3 business days.
             </p>
           </div>
         </section>
 
         {/* Form */}
-        <section className="container mx-auto px-4 py-12">
-          <Card className="max-w-2xl mx-auto card-shadow animate-fade-up">
-            <CardHeader>
-              <CardTitle className="font-serif text-2xl">Event Details</CardTitle>
-              <CardDescription>
+        <section className="container mx-auto px-4 py-16">
+          <div className="max-w-2xl mx-auto border border-border animate-fade-up">
+            <div className="p-6 md:p-8 border-b border-border">
+              <h2 className="font-display text-2xl font-semibold">Event Details</h2>
+              <p className="text-muted-foreground mt-1">
                 Fields marked with * are required
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
+            </div>
+            <div className="p-6 md:p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Title */}
                 <div className="space-y-2">
@@ -168,6 +161,7 @@ const SubmitEvent = () => {
                     value={formData.title}
                     onChange={(e) => handleChange('title', e.target.value)}
                     maxLength={100}
+                    className="rounded-none"
                   />
                 </div>
 
@@ -181,6 +175,7 @@ const SubmitEvent = () => {
                     value={formData.description}
                     onChange={(e) => handleChange('description', e.target.value)}
                     maxLength={1000}
+                    className="rounded-none"
                   />
                 </div>
 
@@ -193,7 +188,7 @@ const SubmitEvent = () => {
                       <Input
                         id="date"
                         type="date"
-                        className="pl-10"
+                        className="pl-10 rounded-none"
                         value={formData.date}
                         onChange={(e) => handleChange('date', e.target.value)}
                       />
@@ -206,7 +201,7 @@ const SubmitEvent = () => {
                       <Input
                         id="time"
                         type="time"
-                        className="pl-10"
+                        className="pl-10 rounded-none"
                         value={formData.time}
                         onChange={(e) => handleChange('time', e.target.value)}
                       />
@@ -219,7 +214,7 @@ const SubmitEvent = () => {
                       <Input
                         id="endTime"
                         type="time"
-                        className="pl-10"
+                        className="pl-10 rounded-none"
                         value={formData.endTime}
                         onChange={(e) => handleChange('endTime', e.target.value)}
                       />
@@ -235,7 +230,7 @@ const SubmitEvent = () => {
                       value={formData.category}
                       onValueChange={(value) => handleChange('category', value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="rounded-none">
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
@@ -253,16 +248,13 @@ const SubmitEvent = () => {
                       value={formData.venueId}
                       onValueChange={(value) => handleChange('venueId', value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="rounded-none">
                         <SelectValue placeholder="Select venue" />
                       </SelectTrigger>
                       <SelectContent>
                         {venues.map((venue) => (
                           <SelectItem key={venue.id} value={venue.id}>
-                            <div className="flex items-center gap-2">
-                              <MapPin className="h-4 w-4 text-muted-foreground" />
-                              {venue.name}
-                            </div>
+                            {venue.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -279,7 +271,7 @@ const SubmitEvent = () => {
                       <Input
                         id="organizer"
                         placeholder="Your name or organization"
-                        className="pl-10"
+                        className="pl-10 rounded-none"
                         value={formData.organizer}
                         onChange={(e) => handleChange('organizer', e.target.value)}
                         maxLength={100}
@@ -294,7 +286,7 @@ const SubmitEvent = () => {
                         id="contactEmail"
                         type="email"
                         placeholder="your@email.com"
-                        className="pl-10"
+                        className="pl-10 rounded-none"
                         value={formData.contactEmail}
                         onChange={(e) => handleChange('contactEmail', e.target.value)}
                         maxLength={255}
@@ -313,6 +305,7 @@ const SubmitEvent = () => {
                       value={formData.price}
                       onChange={(e) => handleChange('price', e.target.value)}
                       maxLength={50}
+                      className="rounded-none"
                     />
                   </div>
                   <div className="space-y-2">
@@ -323,17 +316,18 @@ const SubmitEvent = () => {
                       placeholder="https://..."
                       value={formData.ticketUrl}
                       onChange={(e) => handleChange('ticketUrl', e.target.value)}
+                      className="rounded-none"
                     />
                   </div>
                 </div>
 
                 {/* Submit */}
-                <div className="pt-4">
+                <div className="pt-6">
                   <Button 
                     type="submit" 
-                    variant="amber" 
+                    variant="default" 
                     size="lg" 
-                    className="w-full gap-2"
+                    className="w-full gap-2 uppercase tracking-wide"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -350,12 +344,12 @@ const SubmitEvent = () => {
                   </Button>
                   <p className="text-sm text-muted-foreground text-center mt-4">
                     By submitting, you agree that all information provided is accurate 
-                    and you have permission to organize this event.
+                    and you have permission to organise this event.
                   </p>
                 </div>
               </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       </main>
 
