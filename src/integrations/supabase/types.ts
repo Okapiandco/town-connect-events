@@ -14,7 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      events: {
+        Row: {
+          category: Database["public"]["Enums"]["event_category"]
+          contact_email: string | null
+          created_at: string
+          date: string
+          description: string
+          end_time: string | null
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          organizer: string
+          price: string | null
+          status: Database["public"]["Enums"]["event_status"]
+          submitted_by: string | null
+          ticket_url: string | null
+          time: string
+          title: string
+          updated_at: string
+          venue_id: string | null
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["event_category"]
+          contact_email?: string | null
+          created_at?: string
+          date: string
+          description: string
+          end_time?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          organizer: string
+          price?: string | null
+          status?: Database["public"]["Enums"]["event_status"]
+          submitted_by?: string | null
+          ticket_url?: string | null
+          time: string
+          title: string
+          updated_at?: string
+          venue_id?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["event_category"]
+          contact_email?: string | null
+          created_at?: string
+          date?: string
+          description?: string
+          end_time?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          organizer?: string
+          price?: string | null
+          status?: Database["public"]["Enums"]["event_status"]
+          submitted_by?: string | null
+          ticket_url?: string | null
+          time?: string
+          title?: string
+          updated_at?: string
+          venue_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      venues: {
+        Row: {
+          address: string
+          capacity: number | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          capacity?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          capacity?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +126,17 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      event_category:
+        | "community"
+        | "music"
+        | "sports"
+        | "arts"
+        | "education"
+        | "markets"
+        | "charity"
+        | "council"
+        | "other"
+      event_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +263,19 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      event_category: [
+        "community",
+        "music",
+        "sports",
+        "arts",
+        "education",
+        "markets",
+        "charity",
+        "council",
+        "other",
+      ],
+      event_status: ["pending", "approved", "rejected"],
+    },
   },
 } as const
