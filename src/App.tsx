@@ -8,6 +8,7 @@ import EventDetail from "./pages/EventDetail";
 import Venues from "./pages/Venues";
 import VenueDetail from "./pages/VenueDetail";
 import SubmitEvent from "./pages/SubmitEvent";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/venues" element={<Venues />} />
           <Route path="/venue/:id" element={<VenueDetail />} />
           <Route path="/submit" element={<SubmitEvent />} />
+          <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
