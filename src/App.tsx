@@ -8,6 +8,7 @@ import EventDetail from "./pages/EventDetail";
 import Venues from "./pages/Venues";
 import VenueDetail from "./pages/VenueDetail";
 import SubmitEvent from "./pages/SubmitEvent";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
